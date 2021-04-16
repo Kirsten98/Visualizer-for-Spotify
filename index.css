@@ -1,0 +1,45 @@
+html, .container, canvas, #main {
+    background-color: #2F2933;
+}
+
+h1{
+    margin-top: 50px;
+    font-size: 55px;
+    font-family: 'Amatic SC', cursive;
+    color:#F0FFFF;
+    background-color: transparent;
+}
+
+h3, label{
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    color: #F0FFFF;
+    background-color: transparent;
+}
+
+button {
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    color: #F0FFFF;
+    background-color: transparent;
+    border-color: transparent;
+
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+i {
+    color: #F0FFFF;
+}
+
+#visualizer {
+    width: fit-content;
+    margin-bottom: 100px;
+}
+
+#main{
+    width: 1000px;
+}
+
+
