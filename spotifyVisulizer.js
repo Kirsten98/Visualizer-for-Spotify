@@ -77,7 +77,7 @@ function sdkSetUp() {
       // Playback status updates
       window.Spotify.Player.addListener('player_state_changed', state => {
             console.log(state); 
-            if(state) {
+            if(state && SpotifyControls.accessToken) {
                 trackTimer = state.position;
                 if(state.paused) {
                     pause(true);
@@ -153,7 +153,7 @@ function login() {
                 authWindow.close();
                 originalWindow.focus();
                 SpotifyControls.setAccessToken(response);  
-                // updateLoginButton(true); 
+                updateLoginButton(true); 
                 if(!originalWindow.isInitialized) {
                     sdkSetUp();
                 }
@@ -163,19 +163,22 @@ function login() {
 }
 
 function clear() {
+    console.log("Sign Out")
     pause();
     SpotifyControls.clearAccessToken();
     updateLoginButton(false);
+    updateArtist("No Artist");
+    updateSong("No Song");
 }
 
 function updateLoginButton(isSignedIn){
     if(isSignedIn) {
-         document.getElementById("login").onclick = clear();
+         document.getElementById("login").onclick = clear;
          document.getElementById("login").innerText = "Sign Out";
     
     } else {
-        document.getElementById("login").onclick = login();
-         document.getElementById("login").innerText = "Login";
+        document.getElementById("login").onclick = login;
+        document.getElementById("login").innerText = "Login";
     }
 }
 
@@ -198,11 +201,13 @@ function authorizationResponseCheck(url) {
 }    
 
 function updateSong(song) {
+    console.log("New Song: " + song);
     window.document.getElementById('song').innerText = song;
     setCurrentSong(song);
 }
 
 function updateArtist(artist) {
+    console.log("New Artist: " + artist);
     window.document.getElementById('artist').innerText = artist;
     setCurrentArtist(artist);
 }
