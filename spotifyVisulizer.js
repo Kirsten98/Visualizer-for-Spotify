@@ -5,6 +5,7 @@ class SpotifyControls {
 
     static #accessToken = '';
     static #deviceID = '';
+    static #isPlaying = false;
 
     constructor() {
 
@@ -24,6 +25,14 @@ class SpotifyControls {
 
     static get accessToken() {
         return this.#accessToken;
+    }
+
+    static setIsPlaying(isPlaying) {
+        this.#isPlaying = isPlaying;
+    }
+
+    static get isPlaying() {
+        return this.#isPlaying;
     }
 
 
@@ -81,6 +90,7 @@ function sdkSetUp() {
                 trackTimer = state.position;
                 if(state.paused) {
                     pause(true);
+                 
                 } else {
                     play(true);
                 }
@@ -230,6 +240,7 @@ function togglePlay() {
 
 function play(isPlaying) {
     window.document.getElementById('pausePlayIcon').className = "far fa-pause-circle fa-3x";
+    SpotifyControls.setIsPlaying(true)
 
     if(!isPlaying) {
         var httpRequest = new XMLHttpRequest();
@@ -251,6 +262,7 @@ function play(isPlaying) {
 
 function pause(isPaused) {
     window.document.getElementById('pausePlayIcon').className = "far fa-play-circle fa-3x";
+    SpotifyControls.setIsPlaying(false)
 
     if(!isPaused) {
         var httpRequest = new XMLHttpRequest();
@@ -355,36 +367,84 @@ function updateBeatTimer(barIndex,confidence) {
 
     if(barIndex === 3) {
         bar1Interval = setInterval(() => {
-            draw(3,confidence);
-            bar1SubTimeout = setTimeout(() => {
-                draw(3,(confidence * .75));
-            }, 4000);
-            
-        },1000)
+            if(SpotifyControls.isPlaying) {
+                bar1SubTimeout = setTimeout(() => {
+                    draw(3,confidence);
+                }, 500)
+                
+                bar1SubTimeout = setTimeout(() => {
+                    draw(3,(confidence * .75));
+                }, 500);
+            }
+        },500)
 
         bar2Interval = setInterval(() => {
-            draw(2,previousBeatCon1);
-            draw(4,previousBeatCon1);
-            bar2SubTimeout = setTimeout(() => {
-                draw(2,previousBeatCon1 * .75);
-                draw(4,previousBeatCon1 * .75);
-            }, 4000);
-            
-        },1000)
+            if(SpotifyControls.isPlaying) {
+                bar2SubTimeout = setTimeout(() => {
+                    draw(2,previousBeatCon1);
+                    draw(4,previousBeatCon1);
+                }, 500);
+    
+                bar2SubTimeout = setTimeout(() => {
+                    draw(2,previousBeatCon1 * .75);
+                    draw(4,previousBeatCon1 * .75);
+                }, 500);
+            }
+        },500)
 
         bar3Interval = setInterval(() => {
-            draw(1,previousBeatCon2);
-            draw(5,previousBeatCon2);
-            bar3SubTimeout = setTimeout(() => {
-                draw(1,previousBeatCon2 * .75);
-                draw(5,previousBeatCon2 * .75);
-            }, 4000);
-            
-        },1000)
+            if(SpotifyControls.isPlaying) {
+                bar3SubTimeout = setTimeout(() => {
+                    draw(1,previousBeatCon2);
+                    draw(5,previousBeatCon2);
+                }, 500);
+        
+                bar3SubTimeout = setTimeout(() => {
+                    draw(1,previousBeatCon2 * .75);
+                    draw(5,previousBeatCon2 * .75);
+                }, 500);
+            }
+        }, 500);
+
+        console.log("Confidence: " + confidence);
+        console.log("Prev 1 Confidence: " + previousBeatCon1);
+        console.log("Prev 2 Confidence: " + previousBeatCon2);
+
 
         previousBeatCon2 = previousBeatCon1
         previousBeatCon1 = confidence;
     } 
+    // if(barIndex === 2) {
+    //     bar2Interval = setInterval(() => {
+    //         if(SpotifyControls.isPlaying) {
+    //             bar2SubTimeout = setTimeout(() => {
+    //                 draw(2,confidence);
+    //                 draw(4,confidence);
+    //             }, 750);
+    
+    //             bar2SubTimeout = setTimeout(() => {
+    //                 draw(2,confidence * .75);
+    //                 draw(4,confidence * .75);
+    //             }, 750);
+    //         }
+    //     },500)
+    // }
+    // if(barIndex === 1) {
+    //     bar3Interval= setInterval(() => {
+    //         if(SpotifyControls.isPlaying) {
+    //             bar3SubTimeout = setTimeout(() => {
+    //                 draw(1,confidence);
+    //                 draw(5,confidence);
+    //             }, 750);
+        
+    //             bar3SubTimeout = setTimeout(() => {
+    //                 draw(1,confidence * .75);
+    //                 draw(5,confidence * .75);
+    //             }, 750);
+    //         }
+    //     }, 500)
+        
+    // }
 }
 
 function draw(barIndex, confidence) {
