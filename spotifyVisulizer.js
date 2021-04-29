@@ -43,29 +43,13 @@ class SpotifyControls {
 }
 
 var currentSong;  
-var currentArtist;   
-
-var currentBeatsStarts = {};
-var previousBeatCon1 = 10
-var previousBeatCon2 = 10;
+var currentArtist; 
 
 var trackDurationMS;
 //Tracks current position in song
 var trackTimer;
 var songTimerInterval;
 
-//Middle Bar
-var bar1Interval;
-var bar1SubTimeout
-//Bars 2 & 4
-var bar2Interval;
-var bar2SubTimeout
-// Bars 1 & 5
-var bar3Interval;
-var bar3SubTimeout;
-
-var currentBeat = 0;   
-var beats;
 
 function sdkSetUp() {
     console.log("STARTED!");
@@ -100,6 +84,8 @@ function sdkSetUp() {
 
                 if( song !== getCurrentSong()) {
                     trackDurationMS = state.duration;
+                    document.getElementById('albumArt').src = state.track_window.current_track.album.images[0].url;
+
                     let artistList = state.track_window.current_track.artists;
                     for (let artist = 0; artist < artistList.length ; artist++) {
                         let name = artistList[artist].name;
@@ -303,208 +289,6 @@ function setCurrentArtist(newArtist) {
     currentArtist = newArtist;
 }
 
-function startSongTimer() {
-    songTimerInterval =  setInterval(() => {
-        trackTimer++;
-        if(currentBeatsStarts[trackTimer]) {
-            updateBeatTimer(3,currentBeatsStarts[trackTimer]);
-        }
-    }, 1);
-}
-
-//TODO Isn't stopping bars
-function stopSongTimer() {
-    clearInterval(songTimerInterval);
-
-    clearInterval(bar1Interval);
-    clearInterval(bar2Interval);
-    clearInterval(bar3Interval);
-    
-    clearInterval(bar1SubTimeout);
-    clearInterval(bar2SubTimeout);
-    clearInterval(bar3SubTimeout);
-}   
-
-function startVisualizations(beats) {
-    setCurrentBeat(0);
-    setBeats(beats);
-
-    //Tatums - Lowest regular pulse train that a listener intuitively infers from the timing of perceived musical events: a time quantum
-    //
-
-    //Starts the center bar first*
-    // updateBeatTimer(3,getCurrentBeat());
-
-}
-
-function getCurrentBeat() {
-    return currentBeat;
-}
-
-function setCurrentBeat(newBeatIndex) {
-    currentBeat = newBeatIndex;
-}
-
-function getBeats() {
-    return beats;
-}
-
-function setBeats(newBeats) {
-    beats = newBeats;
-
-    currentBeatsStarts = {};
-    for (let beat in newBeats) {
-        let confidence = newBeats[beat].confidence;
-        let startTime = newBeats[beat].start.toFixed(3) * 1000
-
-        // Creates an object of objects storing the start time and confidence
-        currentBeatsStarts[startTime] = confidence
-    }
-}
-
-//TODO Non-middle bars are freaking out too much
-function updateBeatTimer(barIndex,confidence) {
-
-    if(barIndex === 3) {
-        bar1Interval = setInterval(() => {
-            if(SpotifyControls.isPlaying) {
-                bar1SubTimeout = setTimeout(() => {
-                    draw(3,confidence);
-                }, 500)
-                
-                bar1SubTimeout = setTimeout(() => {
-                    draw(3,(confidence * .75));
-                }, 500);
-            }
-        },500)
-
-        bar2Interval = setInterval(() => {
-            if(SpotifyControls.isPlaying) {
-                bar2SubTimeout = setTimeout(() => {
-                    draw(2,previousBeatCon1);
-                    draw(4,previousBeatCon1);
-                }, 500);
-    
-                bar2SubTimeout = setTimeout(() => {
-                    draw(2,previousBeatCon1 * .75);
-                    draw(4,previousBeatCon1 * .75);
-                }, 500);
-            }
-        },500)
-
-        bar3Interval = setInterval(() => {
-            if(SpotifyControls.isPlaying) {
-                bar3SubTimeout = setTimeout(() => {
-                    draw(1,previousBeatCon2);
-                    draw(5,previousBeatCon2);
-                }, 500);
-        
-                bar3SubTimeout = setTimeout(() => {
-                    draw(1,previousBeatCon2 * .75);
-                    draw(5,previousBeatCon2 * .75);
-                }, 500);
-            }
-        }, 500);
-
-        console.log("Confidence: " + confidence);
-        console.log("Prev 1 Confidence: " + previousBeatCon1);
-        console.log("Prev 2 Confidence: " + previousBeatCon2);
-
-
-        previousBeatCon2 = previousBeatCon1
-        previousBeatCon1 = confidence;
-    } 
-    // if(barIndex === 2) {
-    //     bar2Interval = setInterval(() => {
-    //         if(SpotifyControls.isPlaying) {
-    //             bar2SubTimeout = setTimeout(() => {
-    //                 draw(2,confidence);
-    //                 draw(4,confidence);
-    //             }, 750);
-    
-    //             bar2SubTimeout = setTimeout(() => {
-    //                 draw(2,confidence * .75);
-    //                 draw(4,confidence * .75);
-    //             }, 750);
-    //         }
-    //     },500)
-    // }
-    // if(barIndex === 1) {
-    //     bar3Interval= setInterval(() => {
-    //         if(SpotifyControls.isPlaying) {
-    //             bar3SubTimeout = setTimeout(() => {
-    //                 draw(1,confidence);
-    //                 draw(5,confidence);
-    //             }, 750);
-        
-    //             bar3SubTimeout = setTimeout(() => {
-    //                 draw(1,confidence * .75);
-    //                 draw(5,confidence * .75);
-    //             }, 750);
-    //         }
-    //     }, 500)
-        
-    // }
-}
-
-function draw(barIndex, confidence) {
-    var canvas = document.getElementById('visualizer');
-    if (canvas.getContext) {
-        var ctx = canvas.getContext('2d');
-
-        let x = (barIndex*100) + (50 * barIndex);
-        ctx.clearRect(x, 900, 100, -900);
-        
-        let tensInterval = (confidence * 100) / 10
-        
-        for(let percent = 0 ; percent < tensInterval ; percent++) {
-            switch(percent) {
-                case 1:
-                    ctx.fillStyle = "#bffffb";
-                    ctx.fillRect(x, 760, 100, -(40));
-                    break;
-                case 2:
-                    ctx.fillStyle = "#a6fef8";
-                    ctx.fillRect(x, 700, 100, -(40));
-                    break;
-                case 3:
-                    ctx.fillStyle = "#89fff6";
-                    ctx.fillRect(x, 640, 100, -(40));
-                    break;
-                case 4:
-                    ctx.fillStyle = "#81eff9";
-                    ctx.fillRect(x, 580, 100, -(40));
-                    break;
-                case 5:
-                    ctx.fillStyle = "#77e6f0";
-                    ctx.fillRect(x, 520, 100, -(40));
-                    break;
-                case 6:
-                    ctx.fillStyle = "#6addef";
-                    ctx.fillRect(x, 460, 100, -(40));
-                    break;
-                case 7:
-                    ctx.fillStyle = "#5dd3e5";
-                    ctx.fillRect(x, 400, 100, -(40));
-                    break;
-                case 8:
-                    ctx.fillStyle = "#5dc3e5";
-                    ctx.fillRect(x, 340, 100, -(40));
-                    break;
-                case 9:
-                    ctx.fillStyle = "#4db6d8";
-                    ctx.fillRect(x, 280, 100, -(40));
-                    break;
-                case 10:   
-                    ctx.fillStyle = "#4daad8";
-                    ctx.fillRect(x, 220, 100, -(40));
-                    break;
-            }
-        }
-       
-    }
-  }
-
 function adjustVolume() {
     let volume = Number.parseInt(document.getElementById("volume").value);
     var httpRequest = new XMLHttpRequest();
@@ -535,7 +319,8 @@ function getTrackAudioAnalysis() {
             analysisRequest.onreadystatechange = function() {
                 if(analysisRequest.responseText) {
                     let response = JSON.parse(analysisRequest.responseText);
-                    startVisualizations(response.beats); 
+                    startBeatVisualizations(response.beats); 
+                    startTatumVisualizations(response.tatums); 
                 }
                 
             }
@@ -547,6 +332,32 @@ function getTrackAudioAnalysis() {
 
     
 }
+
+function startSongTimer() {
+    songTimerInterval =  setInterval(() => {
+        trackTimer++;
+        if(currentBeatsStarts[trackTimer]) {
+            updateBeatTimer(currentBeatsStarts[trackTimer]);
+        }
+        
+        if(currentTatumStarts[trackTimer]) {
+            updateTatumTimer(currentTatumStarts[trackTimer])
+        }
+        
+    }, 1);
+}
+
+function stopSongTimer() {
+    clearInterval(songTimerInterval);
+
+    clearInterval(bar1Interval);
+    clearInterval(bar2Interval);
+    clearInterval(bar3Interval);
+    
+    clearInterval(bar1SubTimeout);
+    clearInterval(bar2SubTimeout);
+    clearInterval(bar3SubTimeout);
+}  
 
 
 var express = require('express');
