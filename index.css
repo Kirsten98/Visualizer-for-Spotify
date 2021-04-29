@@ -1,5 +1,9 @@
-html, .container, canvas, #main {
+html, .container, #main {
     background-color: #2F2933;
+}
+
+canvas {
+    background-color:transparent;
 }
 
 h1{
