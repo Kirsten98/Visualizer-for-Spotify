@@ -117,8 +117,8 @@ function drawBeats(barIndex, confidence) {
 
         let leftX = (barIndex * 75);
         let rightX = ( (2 - barIndex) * 75);
-        ctxLeft.clearRect(leftX, 900, 25, -900);
-        ctxRight.clearRect(rightX, 900, 25, -900);
+        ctxLeft.clearRect(leftX, 900, 50, -900);
+        ctxRight.clearRect(rightX, 900, 50, -900);
         
         let tensInterval = (confidence * 100) / 10
         
