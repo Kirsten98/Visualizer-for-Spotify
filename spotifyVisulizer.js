@@ -337,11 +337,11 @@ function startSongTimer() {
     songTimerInterval =  setInterval(() => {
         trackTimer++;
         if(currentBeatsStarts[trackTimer]) {
-            updateBeatTimer(currentBeatsStarts[trackTimer]);
+            updateBeatTimer(currentBeatsStarts[trackTimer].confidence, currentBeatsStarts[trackTimer].duration);
         }
         
         if(currentTatumStarts[trackTimer]) {
-            updateTatumTimer(currentTatumStarts[trackTimer])
+            updateTatumTimer(currentTatumStarts[trackTimer].confidence, currentTatumStarts[trackTimer].duration)
         }
         
     }, 1);

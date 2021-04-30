@@ -2,6 +2,9 @@ var currentTatumStarts = {};
 var previousTatumCon1 = 10
 var previousTatumCon2 = 10;
 
+var previousTatumDuration = 1000;
+var previousTatumDuration2 = 1000; 
+
 //Middle Bar
 var tatumBar1Interval;
 var tatumBar1SubTimeout
@@ -44,9 +47,11 @@ function setTatums(newTatums) {
     for (let tatum in newTatums) {
         let confidence = newTatums[tatum].confidence;
         let startTime = newTatums[tatum].start.toFixed(3) * 1000
+        let duration = newTatums[tatum].duration * 1000;
 
         // Creates an object of objects storing the start time and confidence
-        currentTatumStarts[startTime] = confidence
+        currentTatumStarts[startTime] = {confidence: confidence,
+                                        duration: duration};
     }
 }
 
@@ -54,53 +59,52 @@ function setTatums(newTatums) {
 /**
  * Updates the middle bar with the current confidence, and the side bars with the previoous 
  * @param {Number} confidence Confidence of the tatum
+ * @param {Nuimber} duration How long the tatum lasts
  */
-function updateTatumTimer(confidence) {
+function updateTatumTimer(confidence, duration) {
 
     bar1Interval = setInterval(() => {
         if(SpotifyControls.isPlaying) {
             bar1SubTimeout = setTimeout(() => {
                 drawTatums(2,confidence);
-            }, 500)
+            }, duration)
             
             bar1SubTimeout = setTimeout(() => {
                 drawTatums(2,(confidence * .75));
-            }, 500);
+            }, duration);
         }
-    },500)
+    },duration)
 
     bar2Interval = setInterval(() => {
         if(SpotifyControls.isPlaying) {
             bar2SubTimeout = setTimeout(() => {
                 drawTatums(1,previousTatumCon1);
-            }, 500);
+            }, previousTatumDuration);
 
             bar2SubTimeout = setTimeout(() => {
                 drawTatums(1,previousTatumCon1 * .75);
 
-            }, 500);
+            }, previousTatumDuration);
         }
-    },500)
+    },previousTatumDuration)
 
     bar3Interval = setInterval(() => {
         if(SpotifyControls.isPlaying) {
             bar3SubTimeout = setTimeout(() => {
                 drawTatums(0,previousTatumCon2);
-            }, 500);
+            }, previousTatumDuration2);
     
             bar3SubTimeout = setTimeout(() => {
                 drawTatums(0,previousTatumCon2 * .75);
-            }, 500);
+            }, previousTatumDuration2);
         }
-    }, 500);
-
-    // console.log("Confidence: " + confidence);
-    // console.log("Prev 1 Confidence: " + previousTatumCon1);
-    // console.log("Prev 2 Confidence: " + previousTatumCon2);
-
+    }, previousTatumDuration2);
 
     previousTatumCon2 = previousTatumCon1
     previousTatumCon1 = confidence;
+
+    previousTatumDuration2 = previousTatumDuration;
+    previousTatumDuration = duration;
 }
 
 /**
