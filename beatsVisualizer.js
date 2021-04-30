@@ -2,6 +2,9 @@ var currentBeatsStarts = {};
 var previousBeatCon1 = 10
 var previousBeatCon2 = 10;
 
+var previousBeatDuration = 1000;
+var previousBeatDuration2 = 1000; 
+
 //Middle Bar
 var bar1Interval;
 var bar1SubTimeout
@@ -42,11 +45,13 @@ function setBeats(newBeats) {
 
     currentBeatsStarts = {};
     for (let beat in newBeats) {
-        let confidence = newBeats[beat].confidence;
-        let startTime = newBeats[beat].start.toFixed(3) * 1000
+        let confidence = newBeats[beat].confidence;         
+        let startTime = newBeats[beat].start.toFixed(3) * 1000;
+        let duration = newBeats[beat].duration * 1000;
 
         // Creates an object of objects storing the start time and confidence
-        currentBeatsStarts[startTime] = confidence
+        currentBeatsStarts[startTime] = {confidence: confidence,
+                                        duration: duration}
     }
 }
 
@@ -54,44 +59,45 @@ function setBeats(newBeats) {
 /**
  * Updates the middle bar with the current confidence, and the side bars with the previoous 
  * @param {Number} confidence Confidence of the beat
+ * @param {Nuimber} duration How long the beat lasts
  */
-function updateBeatTimer(confidence) {
+function updateBeatTimer(confidence, duration) {
 
     bar1Interval = setInterval(() => {
         if(SpotifyControls.isPlaying) {
             bar1SubTimeout = setTimeout(() => {
                 drawBeats(2,confidence);
-            }, 500)
+            }, duration)
             
             bar1SubTimeout = setTimeout(() => {
                 drawBeats(2,(confidence * .75));
-            }, 500);
+            }, duration);
         }
-    },500)
+    },duration)
 
     bar2Interval = setInterval(() => {
         if(SpotifyControls.isPlaying) {
             bar2SubTimeout = setTimeout(() => {
                 drawBeats(1,previousBeatCon1);
-            }, 500);
+            }, previousBeatDuration);
 
             bar2SubTimeout = setTimeout(() => {
                 drawBeats(1,previousBeatCon1 * .75);
-            }, 500);
+            }, previousBeatDuration);
         }
-    },500)
+    },previousBeatDuration)
 
     bar3Interval = setInterval(() => {
         if(SpotifyControls.isPlaying) {
             bar3SubTimeout = setTimeout(() => {
                 drawBeats(0,previousBeatCon2);
-            }, 500);
+            }, previousBeatDuration2);
     
             bar3SubTimeout = setTimeout(() => {
                 drawBeats(0,previousBeatCon2 * .75);
-            }, 500);
+            }, previousBeatDuration2);
         }
-    }, 500);
+    }, previousBeatDuration2);
 
     // console.log("Confidence: " + confidence);
     // console.log("Prev 1 Confidence: " + previousBeatCon1);
@@ -100,6 +106,9 @@ function updateBeatTimer(confidence) {
 
     previousBeatCon2 = previousBeatCon1
     previousBeatCon1 = confidence;
+
+    previousBeatDuration2 = previousBeatDuration;
+    previousBeatDuration = duration;
 }
 
 /**
