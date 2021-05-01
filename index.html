@@ -66,21 +66,21 @@
                     <h3 id="artist">No Song</h3>
                 </div>
                 <div class="col-6" style="text-align: center">   
-                    <button class="btn" id='previousSong' onclick="getPreviousSong()">
+                    <button class="btn" id='previousSong' onclick="getPreviousSong()" disabled>
                         <i class="fas fa-step-backward fa-3x" id='previousSongIcon'></i>
                     </button> 
 
-                    <button class="btn" id='pausePlay' onclick="togglePlay()">
+                    <button class="btn" id='pausePlay' onclick="togglePlay()" disabled>
                         <i class="far fa-play-circle fa-3x" id='pausePlayIcon'></i>
                     </button>  
 
-                    <button class="btn" id='nextSong' onclick="getNextSong()">
+                    <button class="btn" id='nextSong' onclick="getNextSong()" disabled>
                         <i class="fas fa-step-forward fa-3x" id='nextSongIcon'></i>
                     </button>
             </div>
             <div class="col-3"  style="text-align: end">   
                 <i class="fas fa-volume-up fa-1x" style="padding-right: 10px;"></i>
-                <input type="range" id='volume' onchange="adjustVolume()" min="0" max="100" value="100">
+                <input type="range" id='volume' onchange="adjustVolume()" min="0" max="100" value="100" disabled>
             </div>
         </div>
     </body>
