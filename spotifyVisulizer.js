@@ -171,10 +171,21 @@ function updateLoginButton(isSignedIn){
     if(isSignedIn) {
          document.getElementById("login").onclick = clear;
          document.getElementById("login").innerText = "Sign Out";
+
+         document.getElementById("previousSong").removeAttribute('disabled');
+         document.getElementById("pausePlay").removeAttribute('disabled');
+         document.getElementById("nextSong").removeAttribute('disabled');
+         document.getElementById("volume").removeAttribute('disabled');
     
     } else {
         document.getElementById("login").onclick = login;
         document.getElementById("login").innerText = "Login";
+
+        document.getElementById("previousSong").setAttribute('disabled','');
+        document.getElementById("pausePlay").setAttribute('disabled','');
+        document.getElementById("nextSong").setAttribute('disabled','');
+        document.getElementById("volume").setAttribute('disabled','');
+        document.getElementById("albumArt").setAttribute('src','');
     }
 }
 
