@@ -57,8 +57,13 @@
                     <canvas id="tatumsVisualizerRight" height="760" width="200" style="position: absolute; right: 0; top: 0; z-index: 0;">   
                     </canvas>
                 </div>
-            </div>
+            </div> 
 
+            <div class="row" >
+                <h3 class="col-1" id="currentTime">0:00</h3>
+                <input type="range" class="col-10" id='seeker' onmousedown="setSliding(true)" onmouseup="adjustTimer(this.value)" min="0" max="1" value='0' disabled>
+                <h3 id="timeDuration" class="col-1">0:00</h3>
+            </div>
 
             <div class="row align-items-center">
                 <div class="col-3" >

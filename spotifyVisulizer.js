@@ -46,10 +46,12 @@ var currentSong;
 var currentArtist; 
 
 var trackDurationMS;
+var songStartTime;
 //Tracks current position in song
 var trackTimer;
 var songTimerInterval;
 
+var isSliding;
 
 function sdkSetUp() {
     console.log("STARTED!");
@@ -72,6 +74,8 @@ function sdkSetUp() {
             console.log(state); 
             if(state && SpotifyControls.accessToken) {
                 trackTimer = state.position;
+                songStartTime = new Date().setMilliseconds(new Date().getMilliseconds() - trackTimer);
+
                 if(state.paused) {
                     pause(true);
                  
@@ -84,6 +88,8 @@ function sdkSetUp() {
 
                 if( song !== getCurrentSong()) {
                     trackDurationMS = state.duration;
+
+                    adjustSeek(trackTimer, trackDurationMS);
                     document.getElementById('albumArt').src = state.track_window.current_track.album.images[0].url;
 
                     let artistList = state.track_window.current_track.artists;
@@ -176,7 +182,8 @@ function updateLoginButton(isSignedIn){
          document.getElementById("pausePlay").removeAttribute('disabled');
          document.getElementById("nextSong").removeAttribute('disabled');
          document.getElementById("volume").removeAttribute('disabled');
-    
+         document.getElementById("seeker").removeAttribute('disabled');
+         
     } else {
         document.getElementById("login").onclick = login;
         document.getElementById("login").innerText = "Login";
@@ -186,6 +193,7 @@ function updateLoginButton(isSignedIn){
         document.getElementById("nextSong").setAttribute('disabled','');
         document.getElementById("volume").setAttribute('disabled','');
         document.getElementById("albumArt").setAttribute('src','');
+        document.getElementById("seeker").setAttribute('disabled','');
     }
 }
 
@@ -237,7 +245,7 @@ function togglePlay() {
 
 function play(isPlaying) {
     window.document.getElementById('pausePlayIcon').className = "far fa-pause-circle fa-3x";
-    SpotifyControls.setIsPlaying(true)
+    SpotifyControls.setIsPlaying(true);
 
     if(!isPlaying) {
         var httpRequest = new XMLHttpRequest();
@@ -251,6 +259,7 @@ function play(isPlaying) {
     if (!songTimerInterval) {
         startSongTimer();
         getTrackAudioAnalysis();
+        console.log("Start Song Timer: " + songTimerInterval)
     }
 
     
@@ -346,7 +355,9 @@ function getTrackAudioAnalysis() {
 
 function startSongTimer() {
     songTimerInterval =  setInterval(() => {
-        trackTimer++;
+        trackTimer = Date.now() - songStartTime;
+        adjustSeek(trackTimer,trackDurationMS);
+
         if(currentBeatsStarts[trackTimer]) {
             updateBeatTimer(currentBeatsStarts[trackTimer].confidence, currentBeatsStarts[trackTimer].duration);
         }
@@ -359,20 +370,59 @@ function startSongTimer() {
 }
 
 function stopSongTimer() {
-    clearInterval(songTimerInterval);
+    songTimerInterval = null;
+    bar1Interval = null;
+    bar2Interval = null;
+    bar3Interval = null;
 
-    clearInterval(bar1Interval);
-    clearInterval(bar2Interval);
-    clearInterval(bar3Interval);
-    
-    clearInterval(bar1SubTimeout);
-    clearInterval(bar2SubTimeout);
-    clearInterval(bar3SubTimeout);
+    bar1SubTimeout = null;
+    bar2SubTimeout = null;
+    bar3SubTimeout = null;
+    console.log("Stop Song Timer: " + songTimerInterval)
 }  
+
+function adjustSeek(currentTime, maxTime) {
+    if(!isSliding) {
+        document.getElementById('seeker').value = currentTime;
+    }
+    
+    document.getElementById('seeker').max = maxTime;
+
+    document.getElementById('currentTime').innerText = millisToMinutesAndSeconds(currentTime);
+    document.getElementById('timeDuration').innerText = millisToMinutesAndSeconds(maxTime);
+
+} 
+
+function adjustTimer(currentTime) {
+    trackTimer = currentTime;
+
+    var seekRequest = new XMLHttpRequest();
+    seekRequest.open('PUT', 'https://api.spotify.com/v1/me/player/seek?position_ms=' +  currentTime, true);
+    seekRequest.setRequestHeader('Authorization', "Bearer " + SpotifyControls.accessToken);
+ 
+    seekRequest.send();
+
+    setSliding(false);
+} 
+
+function setSliding (sliding) {
+    isSliding = sliding;
+}
+
+function millisToMinutesAndSeconds(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return (
+        seconds == 60 ?
+        (minutes+1) + ":00" :
+        minutes + ":" + (seconds < 10 ? "0" : "") + seconds
+      );
+  }
 
 
 var express = require('express');
 const { get } = require('http');
+const { LOADIPHLPAPI } = require('node:dns');
 var app = express();
 var http = require('http').Server(app);
 // var SpotifyWebApi = require('spotify-web-api-node');
