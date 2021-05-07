@@ -135,73 +135,73 @@ function drawBeats(barIndex, confidence) {
             switch(percent) {
                 case 1:
                     ctxLeft.fillStyle = "#bffffb";
-                    ctxLeft.fillRect(leftX, 760, 35, -(40));
+                    ctxLeft.fillRect(leftX, 540, 35, -(40));
 
                     ctxRight.fillStyle = "#bffffb";
-                    ctxRight.fillRect(rightX, 760, 35, -(40));
+                    ctxRight.fillRect(rightX, 540, 35, -(40));
                     break;
                 case 2:
                     ctxLeft.fillStyle = "#a6fef8";
-                    ctxLeft.fillRect(leftX, 700, 35, -(40));
+                    ctxLeft.fillRect(leftX, 480, 35, -(40));
 
                     ctxRight.fillStyle = "#a6fef8";
-                    ctxRight.fillRect(rightX, 700, 35, -(40));
+                    ctxRight.fillRect(rightX, 480, 35, -(40));
                     break;
                 case 3:
                     ctxLeft.fillStyle = "#89fff6";
-                    ctxLeft.fillRect(leftX, 640, 35, -(40));
+                    ctxLeft.fillRect(leftX, 420, 35, -(40));
 
                     ctxRight.fillStyle = "#89fff6";
-                    ctxRight.fillRect(rightX, 640, 35, -(40));
+                    ctxRight.fillRect(rightX, 420, 35, -(40));
                     break;
                 case 4:
                     ctxLeft.fillStyle = "#81eff9";
-                    ctxLeft.fillRect(leftX, 580, 35, -(40));
+                    ctxLeft.fillRect(leftX, 360, 35, -(40));
 
                     ctxRight.fillStyle = "#81eff9";
-                    ctxRight.fillRect(rightX, 580, 35, -(40));
+                    ctxRight.fillRect(rightX, 360, 35, -(40));
                     break;
                 case 5:
                     ctxLeft.fillStyle = "#77e6f0";
-                    ctxLeft.fillRect(leftX, 520, 35, -(40));
+                    ctxLeft.fillRect(leftX, 300, 35, -(40));
 
                     ctxRight.fillStyle = "#77e6f0";
-                    ctxRight.fillRect(rightX, 520, 35, -(40));
+                    ctxRight.fillRect(rightX, 300, 35, -(40));
                     break;
                 case 6:
                     ctxLeft.fillStyle = "#6addef";
-                    ctxLeft.fillRect(leftX, 460, 35, -(40));
+                    ctxLeft.fillRect(leftX, 240, 35, -(40));
 
                     ctxRight.fillStyle = "#6addef";
-                    ctxRight.fillRect(rightX, 460, 35, -(40));
+                    ctxRight.fillRect(rightX, 240, 35, -(40));
                     break;
                 case 7:
                     ctxLeft.fillStyle = "#5dd3e5";
-                    ctxLeft.fillRect(leftX, 400, 35, -(40));
+                    ctxLeft.fillRect(leftX, 180, 35, -(40));
 
                     ctxRight.fillStyle = "#5dd3e5";
-                    ctxRight.fillRect(rightX, 400, 35, -(40));
+                    ctxRight.fillRect(rightX, 180, 35, -(40));
                     break;
                 case 8:
                     ctxLeft.fillStyle = "#5dc3e5";
-                    ctxLeft.fillRect(leftX, 340, 35, -(40));
+                    ctxLeft.fillRect(leftX, 120, 35, -(40));
 
                     ctxRight.fillStyle = "#5dc3e5";
-                    ctxRight.fillRect(rightX, 340, 35, -(40));
+                    ctxRight.fillRect(rightX, 120, 35, -(40));
                     break;
                 case 9:
                     ctxLeft.fillStyle = "#4db6d8";
-                    ctxLeft.fillRect(leftX, 280, 35, -(40));
+                    ctxLeft.fillRect(leftX, 60, 35, -(40));
                     
                     ctxRight.fillStyle = "#4db6d8";
-                    ctxRight.fillRect(rightX, 280, 35, -(40));
+                    ctxRight.fillRect(rightX, 60, 35, -(40));
                     break;
                 case 10:   
                     ctxLeft.fillStyle = "#4daad8";
-                    ctxLeft.fillRect(leftX, 220, 35, -(40));
+                    ctxLeft.fillRect(leftX, 0, 35, -(40));
                     
                     ctxRight.fillStyle = "#4daad8";
-                    ctxRight.fillRect(rightX, 220, 35, -(40));
+                    ctxRight.fillRect(rightX, 0, 35, -(40));
                     break;
             }
         }

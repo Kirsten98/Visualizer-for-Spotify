@@ -29,43 +29,43 @@
                 };
             </script>
 
-            <div class="row align-items-end">
-                <div class="col-9" >
+            <div id='header' class="row align-items-end ">
+                <div class="col-9" style="text-align: left;">
                     <h1>Visualizer for Spotify</h1>
                 </div>
-                <div class="col-3" >
+                <div class="col-3" style="text-align: right;">
                     <button id='login' onclick="login()">Login</button>
 
                 </div>
             </div>
 
-            <div class="row align-items-end">
-                <div style="position: relative;" class="col-3 align-items-end" >
-                    <canvas id="beatsVisualizerLeft" height="760" width="200" style="position: relative; left: 0; top: 0; z-index: 1;">   
+            <div id='visualizer' class="row">
+                <div style="position: relative; text-align: right;" class="col-3 align-items-end" >
+                    <canvas id="beatsVisualizerLeft" height="540" width="200" style="position: relative; left: 0; top: 0; z-index: 1;">   
                     </canvas>
-                    <canvas id="tatumsVisualizerLeft" height="760" width="200" style="position: absolute; left: 0; top: 0; z-index: 0;">   
+                    <canvas id="tatumsVisualizerLeft" height="540" width="200w" style="position: absolute; right: 0; top: 0; z-index: 0;">   
                     </canvas>
                 </div>
 
-                <div style="position: relative;" class="col-6 align-items-center" style='vertical-align: bottom;  text-align: center;'>
-                    <img id=albumArt width='500' height="500">
+                <div style="position: relative;" class="col-6 align-items-center" style='vertical-align: bottom;'>
+                    <img id='albumArt' class='center' width='540' height="540">
                 </div>
 
-                <div style="position: relative;  text-align: right;" class="col-3 align-items-left">
-                    <canvas id="beatsVisualizerRight" height="760" width="200" style="position: relative; right: 0; top: 0; z-index: 1;">   
+                <div style="position: relative;  text-align: left;" class="col-3 align-items-left">
+                    <canvas id="beatsVisualizerRight" height="540" width="200" style="position: relative; right: 0; top: 0; z-index: 1;">   
                     </canvas>
-                    <canvas id="tatumsVisualizerRight" height="760" width="200" style="position: absolute; right: 0; top: 0; z-index: 0;">   
+                    <canvas id="tatumsVisualizerRight" height="540" width="200" style="position: absolute; left: 0; top: 0; z-index: 0;">   
                     </canvas>
                 </div>
             </div> 
 
-            <div class="row" >
+            <div id='seekerDiv' class="row" >
                 <h3 class="col-1" id="currentTime">0:00</h3>
                 <input type="range" class="col-10" id='seeker' onmousedown="setSliding(true)" onmouseup="adjustTimer(this.value)" min="0" max="1" value='0' disabled>
                 <h3 id="timeDuration" class="col-1">0:00</h3>
             </div>
 
-            <div class="row align-items-center">
+            <div id='playerControls' class="row align-items-center">
                 <div class="col-3" >
                     <h3 id="song">No Song</h3>
                     <h3 id="artist">No Song</h3>
