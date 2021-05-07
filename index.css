@@ -2,6 +2,12 @@ html, .container, #main {
     background-color: #2F2933;
 }
 
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 canvas {
     background-color:transparent;
 }
@@ -37,13 +43,17 @@ i {
     color: #F0FFFF;
 }
 
-#visualizer {
-    width: fit-content;
-    margin-bottom: 100px;
+#header {
+    margin-bottom: 75px;
 }
 
-#main{
-    width: 1000px;
+#seekerDiv {
+    margin-bottom: 25px; 
 }
+
+#visualizer {
+    margin-bottom: 50px;
+}
+
 
 

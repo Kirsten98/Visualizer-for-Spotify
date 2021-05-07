@@ -354,6 +354,7 @@ function getTrackAudioAnalysis() {
 }
 
 function startSongTimer() {
+    console.log("Starting Song Timer")
     songTimerInterval =  setInterval(() => {
         trackTimer = Date.now() - songStartTime;
         adjustSeek(trackTimer,trackDurationMS);
@@ -382,13 +383,12 @@ function stopSongTimer() {
 }  
 
 function adjustSeek(currentTime, maxTime) {
-    if(!isSliding) {
+    if(!isSliding && SpotifyControls.isPlaying) {
         document.getElementById('seeker').value = currentTime;
+        document.getElementById('currentTime').innerText = millisToMinutesAndSeconds(currentTime);
     }
     
     document.getElementById('seeker').max = maxTime;
-
-    document.getElementById('currentTime').innerText = millisToMinutesAndSeconds(currentTime);
     document.getElementById('timeDuration').innerText = millisToMinutesAndSeconds(maxTime);
 
 } 

@@ -129,75 +129,75 @@ function drawTatums(barIndex, confidence) {
         for(let percent = 0 ; percent < tensInterval ; percent++) {
             switch(percent) {
                 case 1:
-                    ctxLeft.fillStyle = "#ffe8ed";
-                    ctxLeft.fillRect(leftX, 760, 35, -(40));
+                    ctxLeft.fillStyle = "#ffbde1";
+                    ctxLeft.fillRect(leftX, 540, 35, -(40));
 
-                    ctxRight.fillStyle = "#ffe8ed";
-                    ctxRight.fillRect(rightX, 760, 35, -(40));
+                    ctxRight.fillStyle = "#ffbde1";
+                    ctxRight.fillRect(rightX, 540, 35, -(40));
                     
                     break;
                 case 2:
-                    ctxLeft.fillStyle = "#fdd7df";
-                    ctxLeft.fillRect(leftX, 700, 35, -(40));
+                    ctxLeft.fillStyle = "#ffa5d6";
+                    ctxLeft.fillRect(leftX, 480, 35, -(40));
 
-                    ctxRight.fillStyle = "#fdd7df";
-                    ctxRight.fillRect(rightX, 700, 35, -(40));
+                    ctxRight.fillStyle = "#ffa5d6";
+                    ctxRight.fillRect(rightX, 480, 35, -(40));
                     break;
                 case 3:
-                    ctxLeft.fillStyle = "#fdd7df";
-                    ctxLeft.fillRect(leftX, 640, 35, -(40));
+                    ctxLeft.fillStyle = "#fa99ce";
+                    ctxLeft.fillRect(leftX, 420, 35, -(40));
 
-                    ctxRight.fillStyle = "#fdd7df";
-                    ctxRight.fillRect(rightX, 640, 35, -(40));
+                    ctxRight.fillStyle = "#fa99ce";
+                    ctxRight.fillRect(rightX, 420, 35, -(40));
                     break;
                 case 4:
-                    ctxLeft.fillStyle = "#f49aad";
-                    ctxLeft.fillRect(leftX, 580, 35, -(40));
+                    ctxLeft.fillStyle = "#f486c2";
+                    ctxLeft.fillRect(leftX, 360, 35, -(40));
 
-                    ctxRight.fillStyle = "#f49aad";
-                    ctxRight.fillRect(rightX, 580, 35, -(40));
+                    ctxRight.fillStyle = "#f486c2";
+                    ctxRight.fillRect(rightX, 360, 35, -(40));
                     break;
                 case 5:
-                    ctxLeft.fillStyle = "#e77990";
-                    ctxLeft.fillRect(leftX, 520, 35, -(40));
+                    ctxLeft.fillStyle = "#f378bb";
+                    ctxLeft.fillRect(leftX, 300, 35, -(40));
 
-                    ctxRight.fillStyle = "#e77990";
-                    ctxRight.fillRect(rightX, 520, 35, -(40));
+                    ctxRight.fillStyle = "#f378bb";
+                    ctxRight.fillRect(rightX, 300, 35, -(40));
                     break;
                 case 6:
-                    ctxLeft.fillStyle = "#db5370";
-                    ctxLeft.fillRect(leftX, 460, 35, -(40));
+                    ctxLeft.fillStyle = "#ec60ac";
+                    ctxLeft.fillRect(leftX, 240, 35, -(40));
 
-                    ctxRight.fillStyle = "#db5370";
-                    ctxRight.fillRect(rightX, 460, 35, -(40));
+                    ctxRight.fillStyle = "#ec60ac";
+                    ctxRight.fillRect(rightX, 240, 35, -(40));
                     break;
                 case 7:
-                    ctxLeft.fillStyle = "#d13254";
-                    ctxLeft.fillRect(leftX, 400, 35, -(40));
+                    ctxLeft.fillStyle = "#e34b9e";
+                    ctxLeft.fillRect(leftX, 180, 35, -(40));
 
-                    ctxRight.fillStyle = "#d13254";
-                    ctxRight.fillRect(rightX, 400, 35, -(40));
+                    ctxRight.fillStyle = "#e34b9e";
+                    ctxRight.fillRect(rightX, 180, 35, -(40));
                     break;
                 case 8:
-                    ctxLeft.fillStyle = "#c82749";
-                    ctxLeft.fillRect(leftX, 340, 35, -(40));
+                    ctxLeft.fillStyle = "#d83c91";
+                    ctxLeft.fillRect(leftX, 120, 35, -(40));
 
-                    ctxRight.fillStyle = "#c82749";
-                    ctxRight.fillRect(rightX, 340, 35, -(40));
+                    ctxRight.fillStyle = "#d83c91";
+                    ctxRight.fillRect(rightX, 120, 35, -(40));
                     break;
                 case 9:
-                    ctxLeft.fillStyle = "#b71537";
-                    ctxLeft.fillRect(leftX, 280, 35, -(40));
+                    ctxLeft.fillStyle = "#cc3085";
+                    ctxLeft.fillRect(leftX, 60, 35, -(40));
                     
-                    ctxRight.fillStyle = "#b71537";
-                    ctxRight.fillRect(rightX, 280, 35, -(40));
+                    ctxRight.fillStyle = "#cc3085";
+                    ctxRight.fillRect(rightX, 60, 35, -(40));
                     break;
                 case 10:   
-                    ctxLeft.fillStyle = "#a70c2d";
-                    ctxLeft.fillRect(leftX, 220, 35, -(40));
+                    ctxLeft.fillStyle = "#bb2476";
+                    ctxLeft.fillRect(leftX, 0, 35, -(40));
                     
-                    ctxRight.fillStyle = "#a70c2d";
-                    ctxRight.fillRect(rightX, 220, 35, -(40));
+                    ctxRight.fillStyle = "#bb2476";
+                    ctxRight.fillRect(rightX, 0, 35, -(40));
                     break;
             }
         }
