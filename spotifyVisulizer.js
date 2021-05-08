@@ -6,13 +6,15 @@ class SpotifyControls {
     static #accessToken = '';
     static #deviceID = '';
     static #isPlaying = false;
+    static #loginInterval;
 
     constructor() {
 
     }
 
     static setAccessToken(newAccessToken) {
-        this.#accessToken = newAccessToken;
+        this.#accessToken = newAccessToken.access_token;
+        this.#loginInterval = setTimeout(function() {login(true)},  (newAccessToken.expires_in * 1000) - 120000) 
     }
 
     static get deviceID() {
@@ -38,6 +40,8 @@ class SpotifyControls {
 
     static clearAccessToken() {
         this.#accessToken = '';
+        clearInterval(this.#loginInterval);
+        this.#loginInterval = null;
     }
 
 }
@@ -138,28 +142,37 @@ function sdkSetUp() {
     });    
 }
 
-function login() {
+function login(refresh = false) {
     var scopes = 'user-read-private user-read-email streaming user-modify-playback-state user-read-playback-state user-read-currently-playing';
     var originalWindow = window;
     // TODO add State to request
     var authWindow = window.open('https://accounts.spotify.com/authorize' +
-    '?response_type=token&show_dialog=true' +
+    '?response_type=token&show_dialog=' + !refresh +
     '&client_id=' + client_id +
     '&scope=' + encodeURIComponent(scopes) +
     '&redirect_uri=' + encodeURIComponent(SpotifyControls.redirectUri), "AuthWindow", "width=600,height=600");
 
     var loginInterval = setInterval(() => {
-            var response = authorizationResponseCheck(authWindow.location.href)
-            if(response){
-                clearInterval(loginInterval);
-                authWindow.close();
-                originalWindow.focus();
-                SpotifyControls.setAccessToken(response);  
-                updateLoginButton(true); 
-                if(!originalWindow.isInitialized) {
-                    sdkSetUp();
+            if(authWindow) {
+                var response = authorizationResponseCheck(authWindow.location.href);
+                console.log("Access Token: " + response.access_token);
+                if(response.access_token  && response.access_token !== ''){
+                    loginInterval = null;
+                    clearInterval(loginInterval);
+
+                    authWindow.close();
+                    authWindow = null;
+
+                    originalWindow.focus();
+                    SpotifyControls.setAccessToken(response);  
+                    updateLoginButton(true); 
+                    if(!originalWindow.isInitialized) {
+                        sdkSetUp();
+                    }
                 }
-                
+            } else {
+                loginInterval = null;
+                clearInterval(loginInterval);
             }
     },3000);
 }
@@ -203,16 +216,19 @@ function authorizationResponseCheck(url) {
     if(urlData){
         let urlParameters = urlData.split("&");
         
+        var response = {};
         for(let paramter = 0; paramter < urlParameters.length; paramter++) {
             let splitParam = urlParameters[paramter].split("=");
             if(splitParam[0] === "error") {
                 throw splitParam[1];
             } else if(splitParam[0] === "access_token"){
-                return splitParam[1];
+                response.access_token = splitParam[1];
+            } else if(splitParam[0] === 'expires_in') {
+                response.expires_in = splitParam[1];
             }
         }
     }
-    return false;
+    return response;
 }    
 
 function updateSong(song) {
