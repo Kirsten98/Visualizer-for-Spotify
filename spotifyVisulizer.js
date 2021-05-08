@@ -382,13 +382,12 @@ function stopSongTimer() {
 }  
 
 function adjustSeek(currentTime, maxTime) {
-    if(!isSliding) {
+    if(!isSliding && SpotifyControls.isPlaying) {
         document.getElementById('seeker').value = currentTime;
+        document.getElementById('currentTime').innerText = millisToMinutesAndSeconds(currentTime);
     }
     
     document.getElementById('seeker').max = maxTime;
-
-    document.getElementById('currentTime').innerText = millisToMinutesAndSeconds(currentTime);
     document.getElementById('timeDuration').innerText = millisToMinutesAndSeconds(maxTime);
 
 } 
